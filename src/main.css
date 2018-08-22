@@ -1,0 +1,11 @@
+section{
+    text-align: center;
+    width:80%;
+    height: 100%;
+    display: flex;
+    vertical-align: middle;
+}
+h1{
+    color: rebeccapurple;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
