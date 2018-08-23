@@ -1,28 +1,50 @@
 /*
-© Ben Francis 2017
+© Shivam Singh 2018
+Toony
 
-Main back end script
-
-This file is part of Webian Home.
-
-Webian Home is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Webian Home is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Webian Home.  If not, see <http://www.gnu.org/licenses/>.
+Licensed under MIT
 */
-var express = require('express');
-var app = express();
+'use-strict'
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const port = process.env.PORT || 5000;
 
+// Use body parser t parse body of incoming request
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.raw({ extended: true }));
+app.use(bodyParser.text({ extended: true }));
+
+// Server static HTML Files on root call
 app.use(express.static('src'));
 
-app.listen(8888, function () {
-  console.log('Listening on port 8080.');
+// Configure app for responsing to all HTTP methods 
+app.all('/api/getApiCallDetails', (req, res) => {
+  const api_details = {
+    type:req.method,
+    urlParams: {},
+    body: {},
+    headers: {}
+  }
+
+  console.log("req http method", req.method);
+  console.log("headers", req.headers);
+  console.log("body", req.body);
+  console.log("urlParams", req.query);
+
+  if (req.headers) {
+    api_details.headers = req.headers;
+  }
+  if (req.body) {
+    api_details.body = req.body;
+  }
+  if (req.params) {
+    api_details.urlParams = req.query;
+  }
+  res.status(200).send(api_details);
+})
+
+app.listen(port, function () {
+  console.log(`Listening on port ${port}.`);
 });
